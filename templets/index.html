@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Forecast</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    :root {
+        --blue-1: #62b8f5;
+        --blue-2: #4475ef;
+        --shadow: rgba(3, 46, 87, 0.2);
+    }
+
+    body {
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .container-custom {
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 5rem;
+        box-shadow: 0px 4px 8px var(--shadow);
+    }
+
+    .weather {
+        margin-top: 2rem;
+    }
+
+    .icon img {
+        width: 80px;
+    }
+
+    .btn-custom {
+        background-color: var(--blue-2);
+        color: white;
+        border: none;
+    }
+
+    .btn-custom:hover {
+        background-color: var(--blue-1);
+    }
+</style>
+<body
+    {% if exception_occurred %}
+        style="background-image: url('https://images.pexels.com/photos/3008509/pexels-photo-3008509.jpeg?auto=compress&cs=tinysrgb&w=1600');"
+    {% else %}
+        style="background-image: url('{{ image_url }}');"
+    {% endif %}
+>
+
+<div class="container container-custom">
+    <h1 class="text-center mb-4">Weather App</h1>
+
+    <!-- Search Form -->
+    <form method="post" class="form-inline justify-content-center">
+        {% csrf_token %}
+        <input type="text" class="form-control mr-2 mb-2" name="city" placeholder="Enter city">
+        <button type="submit" class="btn btn-custom mb-2">Search</button>
+    </form>
+
+    <!-- Weather Display -->
+    <div class="row weather text-center">
+        <!-- Left Section: Temperature and City -->
+        <div class="col-md-6 p-3">
+            <h2>{{ temp }}°C</h2>
+            <h4>{{ city }}</h4>
+        </div>
+
+        <!-- Right Section: Icon and Condition -->
+        <div class="col-md-6 p-3">
+            <div class="icon mb-2">
+                <img src="http://openweathermap.org/img/w/{{ icon }}.png" alt="Weather icon">
+            </div>
+            <div class="condition">
+                <p>{{ description }}</p>
+                <p>{{ day }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap and jQuery Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% if exception_occurred %}
+    <script>
+        window.onload = function() {
+            alert("City information is not available from our API.");
+        }
+    </script>
+{% endif %}
+
+</body>
+</html>
